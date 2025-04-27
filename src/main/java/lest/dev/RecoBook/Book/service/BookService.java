@@ -1,7 +1,7 @@
-package lest.dev.RecoBook.service;
+package lest.dev.RecoBook.Book.service;
 
-import lest.dev.RecoBook.model.BookModel;
-import lest.dev.RecoBook.repository.BookRepository;
+import lest.dev.RecoBook.Book.model.Book;
+import lest.dev.RecoBook.Book.repository.BookRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,24 +14,23 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-    public BookModel createBook(BookModel bookModel) {
+    public Book createBook(Book bookModel) {
         return bookRepository.save(bookModel);
     }
 
-    public BookModel alterBook(Long id, BookModel bookModel) {
+    public Book alterBook(Long id, Book bookModel) {
         return bookRepository.save(bookModel);
     }
 
-    public void deleteBook(Long id) {
-        bookRepository.deleteById(id);
-    }
+    public void deleteBook(Long id) { bookRepository.deleteById(id); }
 
-    public List<BookModel> listBooks () {
+    public List<Book> listBooks () {
         return bookRepository.findAll();
     }
 
-    public Optional<BookModel> listByIdBook(Long id) {
+    public Optional<Book> listByIdBook(Long id) {
         return bookRepository.findById(id);
     }
+
 
 }
