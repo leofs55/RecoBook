@@ -35,4 +35,4 @@ build/
 ### Env ###
 .env
 
-/data/
+data
