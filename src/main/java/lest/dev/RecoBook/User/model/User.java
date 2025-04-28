@@ -33,9 +33,8 @@ public class User {
     @Column(name = "birth_date")
     private LocalDate birth_date;
 
-    @OneToMany(mappedBy = "livros")
+    @OneToMany(mappedBy = "user")
     @JsonIgnore
-    @Column(name = "books")
     private List<Book> books;
 
     @Column(name = "email")

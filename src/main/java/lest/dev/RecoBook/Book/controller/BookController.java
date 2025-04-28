@@ -15,10 +15,11 @@ public class BookController {
     private final BookService bookService;
 
     public BookController(BookService bookService) {
+
         this.bookService = bookService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/details/{id}")
     public ResponseEntity<Book> getBook(@PathVariable Long id) {
         return ResponseEntity.ok(bookService.listByIdBook(id).orElse(null));
     }
@@ -28,12 +29,12 @@ public class BookController {
         return ResponseEntity.ok(bookService.listBooks());
     }
 
-    @PostMapping("/create")
+    @PostMapping("/register")
     public ResponseEntity<Book> postBook(@RequestBody Book book) {
         return ResponseEntity.ok(bookService.createBook(book));
     }
 
-    @PutMapping("/alter/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<?> alterBook(@PathVariable Long id, @RequestBody Book book) {
         return ResponseEntity.ok(bookService.alterBook(id, book));
     }

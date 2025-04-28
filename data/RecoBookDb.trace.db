@@ -1,0 +1,15 @@
+2025-04-27 19:44:01.861028-03:00 jdbc[43]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "TB_USER" not found; SQL statement:
+INSERT INTO TB_USER (id, birth_date, email, first_name, last_name ) VALUES (1, 2005-28-10, 'email@exemplo.com', 'Leonardo', 'Figorelli') [42102-232]
+2025-04-27 19:44:17.571693-03:00 jdbc[43]: exception
+org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "1967 (TB_USERS: ""BIRTH_DATE"" DATE)"; SQL statement:
+INSERT INTO tb_users (id, birth_date, email, first_name, last_name ) VALUES (1, 2005-28-10, 'email@exemplo.com', 'Leonardo', 'Figorelli') [22018-232]
+2025-04-27 19:44:34.419113-03:00 jdbc[43]: exception
+org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "-1987 (TB_USERS: ""BIRTH_DATE"" DATE)"; SQL statement:
+INSERT INTO tb_users (id, birth_date, email, first_name, last_name ) VALUES (1, 28-10-2005, 'email@exemplo.com', 'Leonardo', 'Figorelli') [22018-232]
+2025-04-27 19:44:35.626894-03:00 jdbc[43]: exception
+org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "-1987 (TB_USERS: ""BIRTH_DATE"" DATE)"; SQL statement:
+INSERT INTO tb_users (id, birth_date, email, first_name, last_name ) VALUES (1, 28-10-2005, 'email@exemplo.com', 'Leonardo', 'Figorelli') [22018-232]
+2025-04-27 19:45:27.658456-03:00 jdbc[43]: exception
+org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "1967 (TB_USERS: ""BIRTH_DATE"" DATE)"; SQL statement:
+INSERT INTO tb_users (id, birth_date, email, first_name, last_name ) VALUES (1, 2005-10-28, 'email@exemplo.com', 'Leonardo', 'Figorelli') [22018-232]

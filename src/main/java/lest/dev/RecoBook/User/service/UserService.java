@@ -22,7 +22,12 @@ public class UserService {
     }
 
     public User updateUser(Long id, User user) {
-        return userRepository.save(user);
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            user.setId(id);
+            return userRepository.save(user);
+        }
+        return null;
     }
 
     public void deleteUser(Long id) {
