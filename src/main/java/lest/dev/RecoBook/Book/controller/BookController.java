@@ -29,9 +29,9 @@ public class BookController {
         return ResponseEntity.ok(bookService.listBooks());
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<Book> postBook(@RequestBody Book book) {
-        return ResponseEntity.ok(bookService.createBook(book));
+    @PostMapping("/register/{id}")
+    public ResponseEntity<Book> postBook(@PathVariable Long id, @RequestBody Book book) {
+        return ResponseEntity.ok(bookService.createBook(id, book));
     }
 
     @PutMapping("/update/{id}")

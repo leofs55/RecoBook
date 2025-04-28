@@ -22,18 +22,17 @@ public class BookService {
 
     }
 
-    public Book createBook(Book bookModel) {
-
+    public Book createBook(Long id,Book bookModel) {
+        Optional<User> user = userRepository.findById(id);
+        bookModel.setUser(user.orElse(null));
         return bookRepository.save(bookModel);
 
     }
 
     public Book alterBook(Long id, Book bookModel) {
         Optional<Book> book = bookRepository.findById(id);
-        Optional<User> user = userRepository.findById(bookModel.getUser().getId());
         if (book.isPresent()) {
             bookModel.setId(id);
-            bookModel.setUser(user.get());
             return bookRepository.save(bookModel);
         }
         return null;
