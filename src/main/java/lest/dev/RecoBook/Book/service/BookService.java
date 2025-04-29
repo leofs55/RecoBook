@@ -22,9 +22,7 @@ public class BookService {
 
     }
 
-    public Book createBook(Long id,Book bookModel) {
-        Optional<User> user = userRepository.findById(id);
-        bookModel.setUser(user.orElse(null));
+    public Book createBook(Book bookModel) {
         return bookRepository.save(bookModel);
 
     }
