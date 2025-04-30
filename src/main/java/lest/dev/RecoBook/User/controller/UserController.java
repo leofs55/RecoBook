@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@Controller
+@RestController
 @RequestMapping("/user")
 @AllArgsConstructor
 public class UserController {
@@ -37,5 +37,11 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.ok("Deletado!");
     }
+
+    @GetMapping("/generate_book/{id}")
+    public ResponseEntity<String>  generateBook(@PathVariable Long id, @RequestBody User body){
+        return ResponseEntity.ok("");
+    }
+
 
 }

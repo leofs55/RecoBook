@@ -1,5 +1,6 @@
 package lest.dev.RecoBook.Gemini.service;
 
+import lest.dev.RecoBook.Book.model.Book;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
