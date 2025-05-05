@@ -1,5 +1,6 @@
 package lest.dev.RecoBook.Gemini.service;
 
+import lest.dev.RecoBook.Book.dto.BookDTO;
 import lest.dev.RecoBook.Book.model.Book;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +25,7 @@ public class GeminiService {
         this.webClient = webClient;
     }
 
-    public Mono<String> generateRecoBook() {
+    public Mono<String> generateRecoBook(List<BookDTO> dtoList) {
         //Tentar mudar a saida para uma umelhor busca do ISBN
         String prompt = "Me diga apenas o nome de um livro aleatorio e seu  isbn.";
         Map<String, Object> body = Map.of(
