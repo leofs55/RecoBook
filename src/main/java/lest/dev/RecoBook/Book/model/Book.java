@@ -25,7 +25,6 @@ public class Book {
 
     private LocalDate dateEnd;
 
-    @Lob
     private String evaluation;
 
     @ManyToOne
