@@ -19,11 +19,9 @@ public class UserService {
     public UserDTO detailUser(Long id) {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            return userMapper.map(user);
+            return userOptional.map(userMapper::map).orElse(null);
         }
         return null;
-
     }
 
     public UserDTO createUser(UserDTO userDTO) {

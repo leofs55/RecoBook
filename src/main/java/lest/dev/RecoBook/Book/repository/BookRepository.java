@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
 
-    @Query("SELECT b FROM Books b WHERE b.user.id = :id_user")
-    List<Book> findBookByUserId(@Param("id_user") Long id);
+//    @Query("select * from tb_books b where b.user_id = :id_user")
+//    List<Book> findBookByUserId(@Param("id_user") Long id);
 
 }

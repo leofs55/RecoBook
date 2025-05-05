@@ -35,10 +35,10 @@ public class BookController {
         return ResponseEntity.ok(bookService.listBooks());
     }
 
-    @GetMapping("/list/{user_id}")
-    public ResponseEntity<List<BookDTO>> getBooksByUserId(@PathVariable Long id) {
-        return ResponseEntity.ok(bookService.listBooksByUserId(id));
-    }
+//    @GetMapping("/list/{user_id}")
+//    public ResponseEntity<List<BookDTO>> getBooksByUserId(@PathVariable Long id) {
+//        return ResponseEntity.ok(bookService.listBooksByUserId(id));
+//    }
 
     @PostMapping("/register")
     public ResponseEntity<BookDTO> postBook( @RequestBody BookDTO bookDTO) {
