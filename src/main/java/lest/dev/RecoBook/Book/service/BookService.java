@@ -6,6 +6,7 @@ import lest.dev.RecoBook.Book.model.Book;
 import lest.dev.RecoBook.Book.repository.BookRepository;
 import lest.dev.RecoBook.User.model.User;
 import lest.dev.RecoBook.User.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,17 +14,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class BookService {
 
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
-
-    public BookService(BookRepository bookRepository, BookMapper bookMapper) {
-
-        this.bookRepository = bookRepository;
-        this.bookMapper = bookMapper;
-
-    }
 
     public BookDTO createBook(BookDTO bookDTO) {
         Book book = bookMapper.map(bookDTO);
@@ -33,13 +28,14 @@ public class BookService {
     public BookDTO alterBook(Long id, BookDTO bookDTO) {
         Optional<Book> book = bookRepository.findById(id);
         if (book.isPresent()) {
+            bookDTO.setId(id);
             Book bookAtt = bookMapper.map(bookDTO);
-            bookAtt.setId(id);
             bookRepository.save(bookAtt);
             return bookMapper.map(bookAtt);
         }
         return null;
     }
+
 
     public boolean deleteBook(Long id) {
         Optional<Book> book = bookRepository.findById(id);
@@ -48,6 +44,13 @@ public class BookService {
             return true;
         }
         return false;
+    }
+
+    public List<BookDTO> listBooksByUserId(Long id) {
+        List<Book> books = bookRepository.findBookByUserId(id);
+        return books.stream()
+                .map(bookMapper::map)
+                .collect(Collectors.toList());
     }
 
     public List<BookDTO> listBooks () {
@@ -65,6 +68,5 @@ public class BookService {
         }
         return null;
     }
-
 
 }

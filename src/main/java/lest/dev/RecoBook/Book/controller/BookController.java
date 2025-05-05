@@ -11,14 +11,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@Controller
+@RestController
 @RequestMapping("/books")
 public class BookController {
 
     private final BookService bookService;
 
     public BookController(BookService bookService) {
-
         this.bookService = bookService;
     }
 
@@ -36,6 +35,11 @@ public class BookController {
         return ResponseEntity.ok(bookService.listBooks());
     }
 
+    @GetMapping("/list/{user_id}")
+    public ResponseEntity<List<BookDTO>> getBooksByUserId(@PathVariable Long id) {
+        return ResponseEntity.ok(bookService.listBooksByUserId(id));
+    }
+
     @PostMapping("/register")
     public ResponseEntity<BookDTO> postBook( @RequestBody BookDTO bookDTO) {
         return ResponseEntity.ok(bookService.createBook(bookDTO));
@@ -43,9 +47,9 @@ public class BookController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<?> alterBook(@PathVariable Long id, @RequestBody BookDTO bookDTO) {
-        Optional<?> bookAtt = Optional.of(bookService.alterBook(id, bookDTO)) ;
-        if (bookAtt.isPresent()) {
-            return ResponseEntity.ok(bookAtt.get());
+        BookDTO bookAtt = bookService.alterBook(id, bookDTO);
+        if (bookAtt != null) {
+            return ResponseEntity.ok(bookAtt);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book not found!");
     }
