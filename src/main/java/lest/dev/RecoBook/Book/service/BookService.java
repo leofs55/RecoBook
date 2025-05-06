@@ -46,13 +46,6 @@ public class BookService {
         return false;
     }
 
-//    public List<BookDTO> listBooksByUserId(Long id) {
-//        List<Book> books = bookRepository.findBookByUserId(id);
-//        return books.stream()
-//                .map(bookMapper::map)
-//                .collect(Collectors.toList());
-//    }
-
     public List<BookDTO> listBooks () {
         List<Book> books = bookRepository.findAll();
         return books.stream()
