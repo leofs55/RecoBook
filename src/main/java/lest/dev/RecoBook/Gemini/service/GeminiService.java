@@ -25,9 +25,9 @@ public class GeminiService {
         this.webClient = webClient;
     }
 
-    public Mono<String> generateRecoBook(List<BookDTO> list) {
+    public Mono<String> generateRecoBook(List<BookDTO> dtoList) {
         //Tentar mudar a saida para uma umelhor busca do ISBN
-        String prompt = "Me recomende um livro aleatorio.";
+        String prompt = "Me diga apenas o nome de um livro aleatorio e seu  isbn.";
         Map<String, Object> body = Map.of(
                 "contents", List.of(
                         Map.of(
