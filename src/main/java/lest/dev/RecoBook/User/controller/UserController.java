@@ -1,5 +1,6 @@
 package lest.dev.RecoBook.User.controller;
 
+import lest.dev.RecoBook.Gemini.service.GeminiService;
 import lest.dev.RecoBook.User.dto.UserDTO;
 import lest.dev.RecoBook.User.service.UserService;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final GeminiService geminiService;
 
     @GetMapping("/details/{id}")
     public ResponseEntity<?> showById(@PathVariable Long id) {
@@ -46,11 +48,5 @@ public class UserController {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
     }
-
-    @GetMapping("/generate_book/{id}")
-    public ResponseEntity<String>  generateBook(@PathVariable Long id){
-        return ResponseEntity.ok("");
-    }
-
 
 }
