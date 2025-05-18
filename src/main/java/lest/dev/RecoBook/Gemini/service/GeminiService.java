@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class GeminiService {
@@ -25,9 +26,14 @@ public class GeminiService {
         this.webClient = webClient;
     }
 
-    public Mono<String> generateRecoBook(List<BookDTO> dtoList) {
-        //Tentar mudar a saida para uma umelhor busca do ISBN
-        String prompt = "Me diga apenas o nome de um livro aleatorio e seu  isbn.";
+    public Mono<String> generateRecoBook(List<BookDTO> listBooks) {
+        String books = listBooks.stream()
+                .map( book -> String.format(
+                        "Nome: %s, Genero: %s, Data de inicio da leitura: %s, Data de fim da leitura: %s, Avaliação do livro: %s",
+                        book.getName(), book.getGenre(), book.getDateStart(), book.getDateEnd(), book.getEvaluation()))
+                .collect(Collectors.joining("\n"));
+
+        String prompt = "Baseado nessa lista de leituras feitas por mim e considere todos os campos e livros para me recomendar um livro. " + books;
         Map<String, Object> body = Map.of(
                 "contents", List.of(
                         Map.of(
