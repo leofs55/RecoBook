@@ -1,8 +1,7 @@
-package lest.dev.RecoBook.Gemini.service;
+package lest.dev.RecoBook.service;
 
-import lest.dev.RecoBook.Book.dto.BookDTO;
-import lest.dev.RecoBook.Book.model.Book;
-import lombok.AllArgsConstructor;
+import lest.dev.RecoBook.controller.request.BookRequest;
+import lest.dev.RecoBook.entity.Book;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -26,9 +25,9 @@ public class GeminiService {
         this.webClient = webClient;
     }
 
-    public Mono<String> generateRecoBook(List<BookDTO> listBooks) {
+    public Mono<String> generateRecoBook(List<Book> listBooks) {
         String books = listBooks.stream()
-                .map( book -> String.format(
+                .map(book -> String.format(
                         "Nome: %s, Genero: %s, Data de inicio da leitura: %s, Data de fim da leitura: %s, Avaliação do livro: %s",
                         book.getName(), book.getGenre(), book.getDateStart(), book.getDateEnd(), book.getEvaluation()))
                 .collect(Collectors.joining("\n"));
@@ -51,13 +50,14 @@ public class GeminiService {
                 .bodyValue(body)
                 .retrieve()
                 .bodyToMono(Map.class)
-                .map(response ->  {
-                            var candidates = (List<Map<String, Map<String,List<Map<String, Object>>>>>) response.get("candidates");
-                            if (candidates != null && !candidates.isEmpty()) {
-                                Map<String, Object> text = (Map<String, Object>) candidates.get(0).get("content").get("parts").get(0);
-                                return text.get("text").toString();
-                            }
-                            return "Nenhuma livro foi recomendado!";});
+                .map(response -> {
+                    var candidates = (List<Map<String, Map<String, List<Map<String, Object>>>>>) response.get("candidates");
+                    if (candidates != null && !candidates.isEmpty()) {
+                        Map<String, Object> text = (Map<String, Object>) candidates.get(0).get("content").get("parts").get(0);
+                        return text.get("text").toString();
+                    }
+                    return "Nenhuma livro foi recomendado!";
+                });
     }
 
 }

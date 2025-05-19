@@ -1,8 +1,8 @@
-package lest.dev.RecoBook.Gemini.controller;
+package lest.dev.RecoBook.controller;
 
-import lest.dev.RecoBook.Book.dto.BookDTO;
-import lest.dev.RecoBook.Gemini.service.GeminiService;
-import lest.dev.RecoBook.User.service.UserService;
+import lest.dev.RecoBook.entity.Book;
+import lest.dev.RecoBook.service.BookService;
+import lest.dev.RecoBook.service.GeminiService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,12 +18,12 @@ import java.util.List;
 @AllArgsConstructor
 public class GeminiController {
 
-    private final UserService userService;
+    private final BookService bookService;
     private final GeminiService geminiService;
 
     @GetMapping("/generate_book/{id}")
-    public Mono<ResponseEntity<String>> generateBook(@PathVariable Long id){
-        List<BookDTO> books = userService.userBooks(id);
+    public Mono<ResponseEntity<String>> generateBook(@PathVariable Long id) {
+        List<Book> books = bookService.listBookByUserId(id);
         return geminiService.generateRecoBook(books)
                 .map(recomendation -> ResponseEntity.ok(recomendation))
                 .defaultIfEmpty(ResponseEntity.noContent().build());
