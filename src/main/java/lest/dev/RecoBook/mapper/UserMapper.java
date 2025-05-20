@@ -1,7 +1,7 @@
 package lest.dev.RecoBook.mapper;
 
-import lest.dev.RecoBook.controller.request.UserRequest;
-import lest.dev.RecoBook.controller.response.UserResponse;
+import lest.dev.RecoBook.dto.request.UserRequest;
+import lest.dev.RecoBook.dto.response.UserResponse;
 import lest.dev.RecoBook.entity.User;
 import lombok.experimental.UtilityClass;
 

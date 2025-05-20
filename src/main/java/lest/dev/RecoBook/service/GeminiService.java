@@ -1,6 +1,5 @@
 package lest.dev.RecoBook.service;
 
-import lest.dev.RecoBook.controller.request.BookRequest;
 import lest.dev.RecoBook.entity.Book;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;

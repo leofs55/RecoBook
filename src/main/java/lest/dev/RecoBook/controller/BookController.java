@@ -1,7 +1,7 @@
 package lest.dev.RecoBook.controller;
 
-import lest.dev.RecoBook.controller.request.BookRequest;
-import lest.dev.RecoBook.controller.response.BookResponse;
+import lest.dev.RecoBook.dto.request.BookRequest;
+import lest.dev.RecoBook.dto.response.BookResponse;
 import lest.dev.RecoBook.entity.Book;
 import lest.dev.RecoBook.mapper.BookMapper;
 import lest.dev.RecoBook.service.BookService;

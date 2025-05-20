@@ -1,4 +1,4 @@
-package lest.dev.RecoBook.controller.response;
+package lest.dev.RecoBook.dto.response;
 
 import lombok.Builder;
 

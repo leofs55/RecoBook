@@ -1,7 +1,9 @@
 package lest.dev.RecoBook.controller;
 
-import lest.dev.RecoBook.controller.request.UserRequest;
-import lest.dev.RecoBook.controller.response.UserResponse;
+import lest.dev.RecoBook.dto.request.UserLoginRequest;
+import lest.dev.RecoBook.dto.request.UserRequest;
+import lest.dev.RecoBook.dto.response.UserLoginResponse;
+import lest.dev.RecoBook.dto.response.UserResponse;
 import lest.dev.RecoBook.entity.User;
 import lest.dev.RecoBook.mapper.UserMapper;
 import lest.dev.RecoBook.service.GeminiService;
@@ -25,6 +27,7 @@ public class UserController {
     @GetMapping("/details/{id}")
     public ResponseEntity<UserResponse> showById(@PathVariable Long id) {
         Optional<User> userOp = userService.detailUser(id);
+
         return userOp
                 .map(user -> ResponseEntity.ok(UserMapper.map(user)))
                 .orElse(ResponseEntity.notFound().build());
@@ -33,9 +36,13 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userRequest) {
         User user = UserMapper.map(userRequest);
-        //userService.createUser(user)
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 UserMapper.map(userService.createUser(user)));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserLoginResponse> login(@RequestBody UserLoginRequest userRequest) {
+
     }
 
     @PutMapping("/update/{id}")
