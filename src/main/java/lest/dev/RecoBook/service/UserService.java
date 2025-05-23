@@ -1,11 +1,11 @@
 package lest.dev.RecoBook.service;
 
 import lest.dev.RecoBook.entity.User;
-import lest.dev.RecoBook.mapper.BookMapper;
-import lest.dev.RecoBook.mapper.UserMapper;
+import lest.dev.RecoBook.exception.WeakPasswordException;
 import lest.dev.RecoBook.repository.UserRepository;
-import lombok.AllArgsConstructor;
+import lest.dev.RecoBook.validatoras.ValidatorStrongPassword;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,6 +15,8 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final ValidatorStrongPassword validatorStrongPassword;
 
     public Optional<User> detailUser(Long id) {
         Optional<User> userOptional = userRepository.findById(id);
@@ -26,8 +28,16 @@ public class UserService {
 
     //Criar um bglh pra validar uma senha segura!
     public User createUser(User user) {
-        ;
-        return userRepository.save(user);
+        try {
+            if (validatorStrongPassword.validate(user.getPassword())) {
+                String password = user.getPassword();
+                user.setPassword(passwordEncoder.encode(password));
+                return userRepository.save(user);
+            }
+            return User.builder().build();
+        } catch (WeakPasswordException ex) {
+            throw new WeakPasswordException(ex.getMessage());
+        }
     }
 
     public User updateUser(Long id, User user) {

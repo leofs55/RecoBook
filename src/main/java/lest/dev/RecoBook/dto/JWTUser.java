@@ -1,4 +1,7 @@
 package lest.dev.RecoBook.dto;
 
-public record JWTUser() {
+import lombok.Builder;
+
+@Builder
+public record JWTUser(Long id, String email) {
 }
