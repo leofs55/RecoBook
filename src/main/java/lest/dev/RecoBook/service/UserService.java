@@ -18,15 +18,8 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final ValidatorStrongPassword validatorStrongPassword;
 
-    public Optional<User> detailUser(Long id) {
-        Optional<User> userOptional = userRepository.findById(id);
-        if (userOptional.isPresent()) {
-            return userOptional;
-        }
-        return Optional.empty();
-    }
-
     //Criar um bglh pra validar uma senha segura!
+
     public User createUser(User user) {
         try {
             if (validatorStrongPassword.validate(user.getPassword())) {
@@ -38,6 +31,14 @@ public class UserService {
         } catch (WeakPasswordException ex) {
             throw new WeakPasswordException(ex.getMessage());
         }
+    }
+
+    public Optional<User> detailUser(Long id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            return userOptional;
+        }
+        return Optional.empty();
     }
 
     public User updateUser(Long id, User user) {

@@ -1,6 +1,7 @@
 package lest.dev.RecoBook.controller;
 
 import lest.dev.RecoBook.config.TokenService;
+import lest.dev.RecoBook.dto.JWTUser;
 import lest.dev.RecoBook.dto.request.UserLoginRequest;
 import lest.dev.RecoBook.dto.request.UserRequest;
 import lest.dev.RecoBook.dto.response.UserLoginResponse;
@@ -16,8 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,15 +34,6 @@ public class UserController {
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
 
-    @GetMapping("/details/{id}")
-    public ResponseEntity<UserResponse> showById(@PathVariable Long id) {
-        Optional<User> userOp = userService.detailUser(id);
-
-        return userOp
-                .map(user -> ResponseEntity.ok(UserMapper.map(user)))
-                .orElse(ResponseEntity.notFound().build());
-    }
-
     @PostMapping("/register")
     public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userRequest) {
         User user = UserMapper.map(userRequest);
@@ -55,7 +47,7 @@ public class UserController {
            UsernamePasswordAuthenticationToken UsernameAndPassword = new UsernamePasswordAuthenticationToken(userRequest.email(), userRequest.password());
            Authentication authentication = authenticationManager.authenticate(UsernameAndPassword);
 
-           User user = (U'ser) authentication.getPrincipal();
+           User user = (User) authentication.getPrincipal();
 
            return ResponseEntity.ok(UserLoginResponse.builder()
                    .token(tokenService.generateToken(user))
@@ -63,6 +55,15 @@ public class UserController {
        } catch (BadCredentialsException ex) {
            throw new UsernameOrPasswordInvalidException("Usuário ou senha invalido!");
        }
+    }
+
+
+    @GetMapping("/details/{id}")
+    public ResponseEntity<UserResponse> showById(@PathVariable Long id) {
+        Optional<User> userOp = userService.detailUser(id);
+        return userOp
+                .map(user -> ResponseEntity.ok(UserMapper.map(user)))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/update/{id}")
@@ -74,6 +75,42 @@ public class UserController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
         boolean resultDeletion = userService.deleteUser(id);
+        if (resultDeletion) {
+            return ResponseEntity.ok("Deleted!");
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
+    }
+
+    @GetMapping("/details")
+    public ResponseEntity<UserResponse> showByYourId() {
+        //Pega a JWT do User
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        JWTUser userLogged = (JWTUser) authentication.getPrincipal();
+
+        Optional<User> userOp = userService.detailUser(userLogged.id());
+        return userOp
+                .map(user -> ResponseEntity.ok(UserMapper.map(user)))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<UserResponse> updateYourUser(@RequestBody UserRequest userRequest) {
+        //Pega a JWT do User
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        JWTUser userLogged = (JWTUser) authentication.getPrincipal();
+
+        User userAtt = userService.updateUser(userLogged.id(), UserMapper.map(userRequest));
+        return ResponseEntity.ok(UserMapper.map(userAtt));
+    }
+
+    //Criar um DeleteUserResponse e DeleteUserRequest para melhorar a saída.
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteYourUser() {
+        //Pega a JWT do User
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        JWTUser userLogged = (JWTUser) authentication.getPrincipal();
+
+        boolean resultDeletion = userService.deleteUser(userLogged.id());
         if (resultDeletion) {
             return ResponseEntity.ok("Deleted!");
         }
