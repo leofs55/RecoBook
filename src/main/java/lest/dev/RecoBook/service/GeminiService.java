@@ -64,22 +64,34 @@ public class GeminiService {
                 .retrieve()
                 .bodyToMono(Map.class)
                 .map(response -> {
-                    var candidates = (List<Map<String, Map<String, List<Map<String, Object>>>>>) response.get("candidates");
-                    if (candidates != null && !candidates.isEmpty()) {
-                        Map<String, Object> text = (Map<String, Object>) candidates.get(0).get("content").get("parts").get(0);
-                        String resposta = text.get("text").toString();
-                        List<GeminiResponse> responses = null;
-                        try {
-                            responses = mapper.readValue(
-                                    resposta,
-                                    mapper.getTypeFactory().constructCollectionType(List.class, GeminiResponse.class)
-                            );
-                        } catch (JsonProcessingException e) {
-                            throw new RuntimeException(e);
-                        }
+                    String parsinResonse = parsinDataGemini(response);
+                    if (!parsinResonse.equals("")) {
+                        List<GeminiResponse> responses = decodeStringJsonForGeminiResponse(parsinResonse);
                         return responses;
                     }
                     return List.of(GeminiResponse.builder().build());
                 });
+    }
+
+    private String parsinDataGemini(Map response) {
+        var candidates = (List<Map<String, Map<String, List<Map<String, Object>>>>>) response.get("candidates");
+        if (candidates != null && !candidates.isEmpty()) {
+            Map<String, Object> text = (Map<String, Object>) candidates.get(0).get("content").get("parts").get(0);
+            return text.get("text").toString();
+        }
+        return "";
+    }
+
+    private List<GeminiResponse> decodeStringJsonForGeminiResponse(String json) {
+        List<GeminiResponse> responses;
+        try {
+            responses = mapper.readValue(
+                    json,
+                    mapper.getTypeFactory().constructCollectionType(List.class, GeminiResponse.class)
+            );
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        return responses;
     }
 }

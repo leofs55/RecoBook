@@ -1,5 +1,6 @@
 package lest.dev.RecoBook.controller;
 
+import jakarta.validation.Valid;
 import lest.dev.RecoBook.dto.JWTUser;
 import lest.dev.RecoBook.dto.request.BookRequest;
 import lest.dev.RecoBook.dto.response.BookResponse;
@@ -26,7 +27,7 @@ public class BookController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<BookResponse> postBook(@RequestBody BookRequest bookRequest) {
+    public ResponseEntity<BookResponse> postBook(@RequestBody @Valid BookRequest bookRequest) {
         //Pega a JWT do User
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         JWTUser userLogged = (JWTUser) authentication.getPrincipal();
@@ -71,7 +72,7 @@ public class BookController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Optional<BookResponse>> alterBook(@PathVariable Long id, @RequestBody BookRequest bookRequest) {
+    public ResponseEntity<Optional<BookResponse>> alterBook(@PathVariable Long id, @RequestBody @Valid BookRequest bookRequest) {
         //Pega a JWT do User
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         JWTUser userLogged = (JWTUser) authentication.getPrincipal();

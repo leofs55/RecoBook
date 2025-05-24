@@ -1,5 +1,6 @@
 package lest.dev.RecoBook.controller;
 
+import jakarta.validation.Valid;
 import lest.dev.RecoBook.config.TokenService;
 import lest.dev.RecoBook.dto.JWTUser;
 import lest.dev.RecoBook.dto.request.UserLoginRequest;
@@ -35,14 +36,14 @@ public class UserController {
     private final TokenService tokenService;
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<UserResponse> createUser(@RequestBody @Valid UserRequest userRequest) {
         User user = UserMapper.map(userRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 UserMapper.map(userService.createUser(user)));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserLoginResponse> login(@RequestBody UserLoginRequest userRequest) {
+    public ResponseEntity<UserLoginResponse> login(@RequestBody @Valid UserLoginRequest userRequest) {
        try {
            UsernamePasswordAuthenticationToken UsernameAndPassword = new UsernamePasswordAuthenticationToken(userRequest.email(), userRequest.password());
            Authentication authentication = authenticationManager.authenticate(UsernameAndPassword);
@@ -67,7 +68,7 @@ public class UserController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody UserRequest userRequest) {
+    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody @Valid UserRequest userRequest) {
         User userAtt = userService.updateUser(id, UserMapper.map(userRequest));
         return ResponseEntity.ok(UserMapper.map(userAtt));
     }
@@ -94,7 +95,7 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<UserResponse> updateYourUser(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<UserResponse> updateYourUser(@RequestBody @Valid UserRequest userRequest) {
         //Pega a JWT do User
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         JWTUser userLogged = (JWTUser) authentication.getPrincipal();
