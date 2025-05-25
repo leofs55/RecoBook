@@ -57,6 +57,7 @@ public class GeminiService {
                         "responseSchema", responseSchema
                 )
         );
+
         return webClient.post()
                 .uri(url)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -70,7 +71,7 @@ public class GeminiService {
                         return responses;
                     }
                     return List.of(GeminiResponse.builder().build());
-                });
+                    });
     }
 
     private String parsinDataGemini(Map response) {

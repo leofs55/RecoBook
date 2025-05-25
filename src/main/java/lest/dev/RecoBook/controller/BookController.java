@@ -64,7 +64,7 @@ public class BookController {
         //Pega a JWT do User
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         JWTUser userLogged = (JWTUser) authentication.getPrincipal();
-
+        System.out.println(authentication.getCredentials());
         List<Book> list = bookService.listBookByUserId(userLogged.id());
         return ResponseEntity.ok(list.stream()
                 .map(BookMapper::map)
@@ -98,4 +98,5 @@ public class BookController {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book not found!");
     }
+
 }
