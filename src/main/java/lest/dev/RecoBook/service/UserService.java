@@ -18,8 +18,6 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final ValidatorStrongPassword validatorStrongPassword;
 
-    //Criar um bglh pra validar uma senha segura!
-
     public User createUser(User user) {
         try {
             if (validatorStrongPassword.validate(user.getPassword())) {

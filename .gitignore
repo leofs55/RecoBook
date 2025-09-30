@@ -37,3 +37,5 @@ build/
 Dockerfile
 
 data
+
+awskey/

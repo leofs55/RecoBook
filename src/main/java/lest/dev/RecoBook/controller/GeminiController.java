@@ -31,7 +31,7 @@ public class GeminiController {
     private final TokenService tokenService;
 
     @GetMapping("/generate_book")
-    public Mono<ResponseEntity<List<GeminiResponse>>> generateBook(@PathVariable Long id) {
+    public Mono<ResponseEntity<List<GeminiResponse>>> generateBook() {
         //Pega a JWT do User
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
